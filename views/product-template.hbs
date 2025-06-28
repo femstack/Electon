@@ -65,7 +65,7 @@
                             <!-- breadcrumb-list start -->
                             <ul class="breadcrumb-ul">
                                 <li class="breadcrumb-li">
-                                    <a class="breadcrumb-link" href="index.html">Home</a>
+                                    <a class="breadcrumb-link" href="/">Home</a>
                                 </li>
                                 <li class="breadcrumb-li">
                                     <span class="breadcrumb-text">Castle cactus</span>
@@ -154,7 +154,7 @@
                                         <div class="product-info">
                                             <div class="pro-prlb pro-sale">
                                                 <div class="price-box">
-                                                    <span class="new-price">₦{{products.price}}</span>
+                                                    <span style="color: blue;">₦{{products.price}}</span>
                                                     {{!-- <span class="old-price">$19.00</span> --}}
                                                     {{#if products.discount}}
                                                     <span class="percent-count">{{products.discount}}</span>
@@ -263,13 +263,13 @@
                                             </form> --}}
                                         </div>
                                         <div class="product-info">
-                                            <div class="product-actions">
+                                            {{!-- <div class="product-actions">
                                                 <!-- pro-deatail button start -->
                                                 <div class="pro-detail-button">
-                                                    <button type="button" class="btn add-to-cart ajax-spin-cart"
-                                                        onclick="location.href='/cart-add/{{products._id}}?qty=' + document.querySelector('.quantity-input').value">
+                                                    <butt type="button" class="btn add-to-cart ajax-spin-cart"
+                                                        onclick="location.href='/cart-add/:{{id}}?qty=' + document.querySelector('.quantity-input').value">
                                                         <span>Add to cart</span>
-                                                    </button>
+                                                    </butt>
                                                     <a href="cart-page" class="btn btn-cart btn-theme">
                                                         <span>Buy now</span>
                                                     </a>
@@ -287,7 +287,7 @@
                                                     </a>
                                                 </div>
                                                 <!-- pro-deatail wishlist end -->
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         <div class="product-info">
                                             <div class="form-group">
@@ -349,23 +349,20 @@
                                                         <div class="product-form-list">
                                                             <div class="single-product-wrap">
                                                                 <div class="product-image">
+                                                                    {{!-- {{#each products.image}} --}}
                                                                     <a class="pro-img" href="/collection">
                                                                         <img class="img-fluid img1 resp-img1"
-                                                                            src="img/product/home1-pro-1.jpg" alt="p-1">
-                                                                        <img class="img-fluid img2 resp-img2"
-                                                                            src="img/product/home1-pro-1.jpg" alt="p-2">
+                                                                            src="{{products.display}}" alt="p-1" width="70px" height="70px">
                                                                     </a>
+                                                                    {{!-- {{/each}} --}}
                                                                 </div>
                                                                 <div class="product-content">
                                                                     <div class="pro-title-price">
-                                                                        <h6><a href="/product-template">Verse
-                                                                                earphones</a></h6>
+                                                                        <h6><a href="/product-template">{{products.title}}</a></h6>
                                                                         <div class="product-price">
                                                                             <div class="price-box">
                                                                                 <span
-                                                                                    class="new-price">₦{{products.price}}</span>
-                                                                                {{!-- <span
-                                                                                    class="old-price">$25.00</span> --}}
+                                                                                    >₦{{products.price}}</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -698,7 +695,7 @@
                                                 </div>
                                             </fieldset>
                                             <fieldset class="spr-form-actions">
-                                                <input type="submit" name="q"
+                                                <input type="hidden" name="q"
                                                     class="spr-button spr-button-primary button button-primary btn btn-primary"
                                                     value="Submit Review">
                                             </fieldset>
@@ -714,7 +711,7 @@
         </section>
         <!-- product video-review end -->
         <!-- product-tranding start -->
-        <section class="Trending-product bg-color section-ptb">
+        {{!-- <section class="Trending-product bg-color section-ptb">
             <div class="collection-category">
                 <div class="container">
                     <div class="row">
@@ -731,7 +728,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <div class="collection-wrap">
+                            {{!-- <div class="collection-wrap">
                                 <div class="collection-slider swiper" id="Trending-product">
                                     <div class="swiper-wrapper">
                                         <div class="swiper-slide" data-animate="animate__fadeInUp">
@@ -1400,7 +1397,7 @@
                                         </div>
                                     </div>
                                     <div class="collection-button">
-                                        <a href="collection.html" class="btn btn-style2"
+                                        <a href="collection" class="btn btn-style2"
                                             data-animate="animate__fadeInUp">View all item</a>
                                     </div>
                                 </div>
@@ -1415,12 +1412,12 @@
                                 <div class="swiper-dots">
                                     <div class="swiper-pagination swiper-pagination-Trending"></div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </section> --}}
         <!-- product-tranding end -->
     </main>
     <!-- main section end-->

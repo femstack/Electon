@@ -113,7 +113,7 @@
                                                     <!-- cart-img end -->
                                                     <!-- cart-title start -->
                                                     <div class="item-text">
-                                                        <a href="product-template/"
+                                                        <a href="/product-template/{{id}}"
                                                             data-animate="animate__fadeInUp">{{products.title}}</a>
                                                         <span class="item-option" data-animate="animate__fadeInUp">
                                                             <span class="item-title">Color:</span>
@@ -132,11 +132,11 @@
                                                     <div class="product-quantity-action">
                                                         <div class="product-quantity" data-animate="animate__fadeInUp">
                                                             <div class="cart-plus-minus">
-                                                                <button class="dec qtybutton minus"><i
-                                                                        class="fa-solid fa-minus"></i></button>
+                                                                <a href="/cart-add/{{id}}" class="dec qtybutton minus"><i
+                                                                        class="fa-solid fa-minus"></i></a>
                                                                 <input type="text" name="quantity" value="{{quantity}}">
-                                                                <button class="inc qtybutton plus"><i
-                                                                        class="fa-solid fa-plus"></i></button>
+                                                                <a href="/cart-add/{{id}}" class="inc qtybutton plus"><i
+                                                                        class="fa-solid fa-plus"></i></a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -168,7 +168,7 @@
                                     </div>
                                 </div>
                                 <div class="cart-info-wrap">
-                                    <div class="cart-calculator cart-info">
+                                    {{!-- <div class="cart-calculator cart-info">
                                         <h6 data-animate="animate__fadeInUp">Shipping info</h6>
                                         <div class="culculate-shipping" id="shipping-calculator">
                                             <ul>
@@ -211,41 +211,41 @@
                                                 <a href="javascript:void(0)" class="btn btn-style2">Calculate</a>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="cart-total-wrap cart-info">
                                         <div class="cart-total">
                                             <div class="total-amount" data-animate="animate__fadeInUp">
                                                 <h6 class="total-title">Total</h6>
-                                                <span class="amount total-price">$56.00</span>
+                                                <span class="amount total-price">₦{{sumtotal cart}}</span>
                                             </div>
                                             <div class="proceed-to-discount" data-animate="animate__fadeInUp">
                                                 <input type="text" name="discount" placeholder="Discount code">
                                             </div>
                                             <div class="proceed-to-checkout" data-animate="animate__fadeInUp">
-                                                <a href="checkout-style1.html" class="btn btn-style2">Checkout</a>
+                                                <a href="/checkout" class="btn btn-style2">Checkout</a>
                                             </div>
                                             <div class="cart-payment-icon">
                                                 <ul class="payment-icon">
                                                     <li data-animate="animate__fadeInUp">
-                                                        <a href="index.html">
+                                                        <a href="/cart-page">
                                                             <img src="img/payment/pay-1.jpg" class="img-fluid"
                                                                 alt="pay-1">
                                                         </a>
                                                     </li>
                                                     <li data-animate="animate__fadeInUp">
-                                                        <a href="index.html">
+                                                        <a href="/cart-page">
                                                             <img src="img/payment/pay-2.jpg" class="img-fluid"
                                                                 alt="pay-2">
                                                         </a>
                                                     </li>
                                                     <li data-animate="animate__fadeInUp">
-                                                        <a href="index.html">
+                                                        <a href="/cart-page">
                                                             <img src="img/payment/pay-3.jpg" class="img-fluid"
                                                                 alt="pay-3">
                                                         </a>
                                                     </li>
                                                     <li data-animate="animate__fadeInUp">
-                                                        <a href="index.html">
+                                                        <a href="/cart-page">
                                                             <img src="img/payment/pay-4.jpg" class="img-fluid"
                                                                 alt="pay-4">
                                                         </a>

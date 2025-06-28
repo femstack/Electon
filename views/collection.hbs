@@ -193,7 +193,7 @@
                                                                         </div>
                                                                         <div class="product-title">
                                                                             <h6><a
-                                                                                    href="cart-add/{{_id}}">{{title}}</a>
+                                                                                    href="/product-template/{{id}}">{{title}}</a>
                                                                             </h6>
                                                                         </div>
                                                                         <div class="product-price">
@@ -208,7 +208,28 @@
                                                                                 Ipsum has been the industry's standard
                                                                                 dummy text ever since the 1500s.</p>
                                                                         </div>
-
+                                                                         <div class="product-action">
+                                                                        <a href="#quickview" class="quickview"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#quickview">
+                                                                            <span class="tooltip-text">Quickview</span>
+                                                                            <span class="pro-action-icon"><i
+                                                                                    class="feather-eye"></i></span>
+                                                                        </a>
+                                                                        <a href="/cart/{{sku}}" class="add-to-cart"
+                                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                            data-bs-target="#add-to-cart">
+                                                                            <span class="tooltip-text">Add to
+                                                                                cart</span>
+                                                                            <span class="pro-action-icon"><i
+                                                                                    class="feather-shopping-bag"></i></span>
+                                                                        </a>
+                                                                        <a href="/wishlist/{{id}}" class="wishlist">
+                                                                            <span class="tooltip-text">Wishlist</span>
+                                                                            <span class="pro-action-icon"><i
+                                                                                    class="feather-heart"></i></span>
+                                                                        </a>
+                                                                    </div>
                                                                     </div>
                                                                     <div class="pro-label-retting">
                                                                         <div class="product-ratting">
