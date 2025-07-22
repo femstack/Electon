@@ -45,6 +45,43 @@
     <link rel="stylesheet" type="text/css" href="css/product-page.css">
     <!-- style css -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <style>
+        .form-fill-li {
+            list-style: none;
+            margin: 20px 0;
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-fill-li label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-fill-li input {
+            width: 100%;
+            padding: 10px 90px 10px 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .eye,
+        .eye-slash {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #555;
+        }
+
+        .eye-slash {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -114,8 +151,19 @@
                                         </li>
                                         <li class="form-fill-li Password" data-animate="animate__fadeInUp">
                                             <label>Password</label>
-                                            <input type="password" name="password" placeholder="Enter your password">
+                                            <input type="password" name="password" id="password"
+                                                placeholder="Enter your password">
+                                            <span class="eye eye-icon" onclick="togglePassword()">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </span>
+                                            <span class="eye eye-slash" onclick="togglePassword()">
+                                                <i class="fa-solid fa-eye-slash"></i>
+                                            </span>
                                         </li>
+                                        {{!-- <li class="form-fill-li Password" data-animate="animate__fadeInUp">
+                                            <label>Password</label>
+                                            <input type="password" name="password" placeholder="Enter your password">
+                                        </li> --}}
                                     </ul>
                                     <div class="form-action-button">
                                         <div class="read-agree">
@@ -786,7 +834,7 @@
         setTimeout(() => {
             frontendValidationActive = false;
             console.log("Frontend password validation has expired.");
-        }, 120000);
+        }, 5000);
 
         const form = document.querySelector('form[action="/create-account"]');
         const passwordInput = form.querySelector('input[name="password"]');
@@ -813,6 +861,23 @@
         });
     </script>
 
+    <script>
+        function togglePassword() {
+            const input = document.getElementById("password");
+            const eye = document.querySelector(".eye-icon");
+            const eyeSlash = document.querySelector(".eye-slash");
+
+            if (input.type === "password") {
+                input.type = "text";
+                eye.style.display = "none";
+                eyeSlash.style.display = "inline";
+            } else {
+                input.type = "password";
+                eye.style.display = "inline";
+                eyeSlash.style.display = "none";
+            }
+        }
+    </script>
 
 </body>
 

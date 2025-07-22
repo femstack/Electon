@@ -1,11 +1,19 @@
 const {v4: uuidv4} = require('uuid');
 const accountmodel = require("../models/useraccount");
+const path = require("path");
+const fs = require("fs");
 
 const uniqueImageName = (name) =>{
     const imgExt = name.split('.').pop();
     const newName = `${uuidv4()}.${imgExt}`;
     return newName;
 }
+
+const uniqueBlogImageName = (filename) => {
+  const ext = path.extname(filename);
+  const name = uuidv4();
+  return `${name}${ext}`;
+};
 
 const generateOrderId = async () => {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -89,4 +97,4 @@ const generateOrderNum = async () => {
 
 
 // Endpoint to generate a product code
-module.exports = {uniqueImageName, generateOrderId, generateProductCode, generateOrderNum, uniqueImageName};
+module.exports = {uniqueImageName, generateOrderId, generateProductCode, generateOrderNum, uniqueImageName, uniqueBlogImageName};

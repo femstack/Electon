@@ -45,6 +45,42 @@
     <link rel="stylesheet" type="text/css" href="css/product-page.css">
     <!-- style css -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <style>
+    .form-fill-li {
+      list-style: none;
+      margin: 20px 0;
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .form-fill-li label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-fill-li input {
+      width: 100%;
+      padding: 10px 90px 10px 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .eye, .eye-slash {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #555;
+    }
+
+    .eye-slash {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
@@ -101,16 +137,20 @@
                                                 <input type="email" name="email" autocomplete="email"
                                                     placeholder="Email address">
                                             </li>
-                                            <li class="form-fill-li Password" data-animate="animate__fadeInUp">
-                                                <label>Password</label>
-                                                <input type="password" name="password" placeholder="Password">
-                                                <span class="eye eye-icon">
-                                                    <i class="fa-solid fa-eye"></i>
-                                                </span>
-                                                <span class="eye eye-slash">
-                                                    <i class="fa-solid fa-eye-slash"></i>
-                                                </span>
-                                            </li>
+
+                                            <ul>
+                                                <li class="form-fill-li Password" data-animate="animate__fadeInUp">
+                                                    <label>Password</label>
+                                                    <input type="password" name="password" id="password"
+                                                        placeholder="Password">
+                                                    <span class="eye eye-icon" onclick="togglePassword()">
+                                                        <i class="fa-solid fa-eye"></i>
+                                                    </span>
+                                                    <span class="eye eye-slash" onclick="togglePassword()">
+                                                        <i class="fa-solid fa-eye-slash"></i>
+                                                    </span>
+                                                </li>
+                                            </ul>
                                         </ul>
                                         <div class="form-action-button" data-animate="animate__fadeInUp">
                                             <div class="button-forget">
@@ -818,6 +858,24 @@
             });
         }
     </script>
+
+      <script>
+    function togglePassword() {
+      const input = document.getElementById("password");
+      const eye = document.querySelector(".eye-icon");
+      const eyeSlash = document.querySelector(".eye-slash");
+
+      if (input.type === "password") {
+        input.type = "text";
+        eye.style.display = "none";
+        eyeSlash.style.display = "inline";
+      } else {
+        input.type = "password";
+        eye.style.display = "inline";
+        eyeSlash.style.display = "none";
+      }
+    }
+  </script>
 </body>
 
 <!-- Mirrored from spacingtech.com/html/electon/electon/login-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 22 Feb 2025 11:10:21 GMT -->

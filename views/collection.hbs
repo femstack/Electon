@@ -156,7 +156,7 @@
                                                         <li class="pro-item-li" data-animate="animate__fadeInUp">
                                                             <div class="single-product-wrap">
                                                                 <div class="product-image banner-hover">
-                                                                    <a href="product-template" class="pro-img">
+                                                                    <a href="/product-template/{{id}}" class="pro-img">
                                                                         <img src="{{display}}" class=""
                                                                             style="height: 35vh; width: 100%;" alt="p1">
                                                                         {{!-- <img src="img/product/home1-pro-2.jpg"
@@ -203,10 +203,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="product-description">
-                                                                            <p>Lorem Ipsum is simply dummy text of the
-                                                                                printing and typesetting industry. Lorem
-                                                                                Ipsum has been the industry's standard
-                                                                                dummy text ever since the 1500s.</p>
+                                                                            <p>{{product-description}}</p>
                                                                         </div>
                                                                          <div class="product-action">
                                                                         <a href="#quickview" class="quickview"
@@ -282,7 +279,7 @@
                                             </button>
                                             <!-- button end -->
                                             <!-- filter-form start -->
-                                            <div class="facets">
+                                            {{!-- <div class="facets">
                                                 <form class="facets-form">
                                                     <div class="facets-wrapper">
                                                         <!-- Product-Categories start -->
@@ -738,7 +735,7 @@
                                                         </div>
                                                     </div>
                                                 </form>
-                                            </div>
+                                            </div> --}}
                                             <!-- filter-form end -->
                                         </div>
                                     </div>

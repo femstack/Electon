@@ -8,11 +8,14 @@ const getcartpage = async (req, res) => {
   const user = req.user;
   try {
     const cart = await cartmodel
-      .find({ account: user._id, checkedout: false })
+      .find({ account: user?._id, checkedout: false })
       .populate("products");
+
+    const products = await productmodel.find();
     res.render("cart-page", {
       user,
       cart,
+      products,
       message: req.query?.message,
       error: req.query?.error,
     });
@@ -25,6 +28,7 @@ const getcartpage = async (req, res) => {
       message: err.message,
       user,
       cart,
+      products: [],
     });
   }
 };
@@ -237,7 +241,6 @@ const clearedcart = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   addcart,

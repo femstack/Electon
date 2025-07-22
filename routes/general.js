@@ -21,7 +21,7 @@ const {
   getprivacypolicy,
   getproducttemplate,
   getsearch,
-  getsearchblog,
+  getArticlepost,
   getreturn,
   getproadd,
   getprotick,
@@ -32,6 +32,9 @@ const {
   postForm,
   getaddproduct,
   postProduct,
+  getblogform,
+  postBlog,
+  postComment,
 } = require("../controllers/general");
 const express = require("express");
 const router = express.Router();
@@ -63,7 +66,7 @@ router.get("/pro-tickets", unverifyToken, getprotick);
 router.get("/product-template/:id", unverifyToken, getproducttemplate);
 router.get("/profile/", verifyToken, getprofile);
 router.get("/return-policy", verifyToken, getreturn);
-router.get("/search-blog", unverifyToken, getsearchblog);
+router.get("/article-post/:id", unverifyToken, getArticlepost);
 router.get("/search", unverifyToken, getsearch);
 router.get("/shipping-policy", verifyToken, getshipping);
 router.get("/sitemap", verifyToken, getsitemap);
@@ -73,5 +76,9 @@ router.get("/wishlist-empty", verifyToken, getwislistemp);
 router.get("/wishlist-product", verifyToken, getwislistprod);
 router.get("/addproduct", verifyToken, getaddproduct);
 router.post("/addproduct", verifyToken, postProduct);
+router.get("/blogform", verifyToken, getblogform);
+router.post("/blogform", verifyToken, postBlog);
+router.post("/article-post/:id/comment", unverifyToken, postComment);
+
 
 module.exports = router;

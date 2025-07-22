@@ -147,7 +147,31 @@ const validatepassword = Joi.object({
   newpassword: Joi.string().required().messages({
     "string.empty": "Password is required",
   }),
-})
+});
+
+const validateBlog = Joi.object({
+  title: Joi.string().required().messages({
+    "string.empty": "Title is required",
+  }),
+  date: Joi.date().required(),
+  excerpt: Joi.string().required().messages({
+    "string.empty": "SubTitle is required",
+  }),
+  content: Joi.string().required().messages({
+    "string.empty": "Content is required",
+  }),
+  tags: Joi.alternatives()
+    .try(
+      Joi.string(), // single tag
+      Joi.array().items(Joi.string()) // multiple tags
+    )
+    .required()
+    .messages({
+      "any.required": "Tags are required",
+      "string.base": "Each tag must be a string",
+      "array.includes": "Tags must be strings",
+    }),
+});
 
 module.exports = {
   validateProduct,
@@ -156,4 +180,5 @@ module.exports = {
   validateUpdate,
   validateAddress,
   validatepassword,
+  validateBlog,
 };

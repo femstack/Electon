@@ -1,13 +1,18 @@
 const Contact = require("../models/contact");
 const path = require("path");
 const fs = require("fs");
-const { validateProduct } = require("../middlewares/validate");
-const { uniqueImageName, generateOrderId } = require("../middlewares/unique");
+const { validateProduct, validateBlog } = require("../middlewares/validate");
+const {
+  uniqueImageName,
+  generateOrderId,
+  uniqueBlogImageName,
+} = require("../middlewares/unique");
 const productmodel = require("../models/products");
 const cartmodel = require("../models/cart");
 const addressmodel = require("../models/address");
 const Transaction = require("../models/payment");
 const wishlistmodel = require("../models/wishlish");
+const blogModel = require("../models/blog");
 
 const gethome = async (req, res) => {
   const user = req.user;
@@ -16,18 +21,25 @@ const gethome = async (req, res) => {
     const cart = await cartmodel
       .find({ account: user?._id, checkedout: false })
       .populate("products");
+
+    const products = await productmodel.find();
     res.render("index", {
       cart,
       user,
+      products,
       firstName,
       message: req.query?.message,
       error: req.query?.error,
     });
   } catch (err) {
-    const cart = await cartmodel
-      .find({ account: user?._id, checkedout: false })
-      .populate("products");
-    res.render("500", { user, cart });
+    console.error(err);
+    res.status(500).render("collection", {
+      error: "Internal Server Error",
+      message: err.message,
+      user,
+      cart: [],
+      products: [],
+    });
   }
 };
 
@@ -51,14 +63,6 @@ const getabout = async (req, res) => {
   }
 };
 
-// const getaccount = async (req, res) => {
-//     try {
-//         res.render("account");
-//     } catch (err) {
-//         res.status(500).json({ error: "Internal Server Error", message: err.message });
-//     }
-// };
-
 const getbilling = async (req, res) => {
   const user = req.user;
   try {
@@ -76,7 +80,14 @@ const getblog = async (req, res) => {
     const cart = await cartmodel
       .find({ account: user?._id, checkedout: false })
       .populate("products");
-    res.render("blog-grid", { user, cart });
+
+    const findBlog = await blogModel.find();
+
+    const recentPosts = await blogModel.find().sort({ date: -1 }).limit(5);
+
+    // const allTags = [...new Set(allPosts.flatMap(post => post.tags || []))];
+
+    res.render("blog-grid", { user, cart, recentPosts, findBlog });
   } catch (err) {
     const cart = await cartmodel
       .find({ account: user?._id, checkedout: false })
@@ -400,11 +411,22 @@ const getreturn = async (req, res) => {
   }
 };
 
-const getsearchblog = async (req, res) => {
+const getArticlepost = async (req, res) => {
   const user = req.user;
   try {
-    res.render("search-blog", { user });
+    const blog = await blogModel.findById(req.params.id);
+    if (!blog) {
+      return res.status(404).render("404", { message: "Blog post not found" });
+    }
+    const findBlog = await blogModel.find();
+
+    const recentPosts = await blogModel.find().sort({ date: -1 }).limit(5);
+
+    // const allTags = [...new Set(allPosts.flatMap(post => post.tags || []))];
+
+    res.render("article-post", { user, blog, recentPosts, findBlog });
   } catch (err) {
+    console.error("Error fetching blog:", err);
     res
       .status(500)
       .json({ error: "Internal Server Error", message: err.message, user });
@@ -519,6 +541,31 @@ const getaddproduct = async (req, res) => {
       cart,
     });
     // res.sendFile(path.join(__dirname, "/addproduct"));
+  } catch (err) {
+    const cart = await cartmodel
+      .find({ account: user._id, checkedout: false })
+      .populate("products");
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: err.message,
+      user,
+      cart,
+    });
+  }
+};
+
+const getblogform = async (req, res) => {
+  const user = req.user;
+  try {
+    const cart = await cartmodel
+      .find({ account: user._id, checkedout: false })
+      .populate("products");
+    res.render("blogform", {
+      user,
+      cart,
+      message: req.query?.message,
+      error: req.query?.error,
+    });
   } catch (err) {
     const cart = await cartmodel
       .find({ account: user._id, checkedout: false })
@@ -647,6 +694,110 @@ const postProduct = async (req, res) => {
   }
 };
 
+const postBlog = async (req, res) => {
+  try {
+    // Convert 'tags[]' to 'tags' for Joi validation
+    if (req.body["tags[]"]) {
+      req.body.tags = req.body["tags[]"];
+      delete req.body["tags[]"];
+    }
+    // console.log("📦 Submitted Body:", req.body)
+    const { error } = validateBlog.validate(req.body);
+    if (error) {
+      console.log(error.details);
+      return res.redirect(`/blogform?error=${error.details[0].message}`);
+    }
+
+    const image = req.files?.image;
+    if (!image) {
+      return res.redirect("/blogform?error=Image is required");
+    }
+
+    const allowedExt = /jpeg|jpg|png/;
+    const imgName = image.name;
+    const ext = imgName.split(".").pop().toLowerCase();
+    if (!allowedExt.test(ext)) {
+      return res.redirect(
+        `/blogform?error=Invalid file type for ${imgName}. Only JPG, JPEG, PNG allowed.`
+      );
+    }
+
+    if (image.size > 1024 * 1024 * 3) {
+      return res.redirect("/blogform?error=Image size must not exceed 3MB");
+    }
+
+    const uploadDir = path.join(__dirname, "../public/uploads");
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    const uniqueName = uniqueBlogImageName(imgName);
+    const imagePath = path.join(uploadDir, uniqueName);
+
+    await image.mv(imagePath, (err) => {
+      if (err) {
+        console.log(err);
+        return res.redirect("/blogform?error=Image upload failed");
+      }
+    });
+
+    let tags = req.body.tags;
+
+    if (!Array.isArray(tags)) {
+      tags = [tags]; // convert single tag to array
+    }
+
+    // Save blog to DB
+    await blogModel.create({
+      title: req.body.title,
+      date: req.body.date,
+      excerpt: req.body.excerpt,
+      content: req.body.content,
+      tags: tags,
+      image: `/uploads/${uniqueName}`,
+    });
+
+    res.redirect("/blogform?message=Blog post published successfully!");
+  } catch (err) {
+    console.error("Blog post error:", err);
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: err.message,
+    });
+  }
+};
+
+const postComment = async (req, res) => {
+  const blogId = req.params.id;
+  const { author, email, message } = req.body;
+
+  try {
+    const blog = await blogModel.findById(blogId);
+    if (!blog) {
+      return res.status(404).send("Blog not found");
+    }
+
+    // Push comment
+    blog.comments.push({
+      author,
+      email,
+      message,
+      date: new Date().toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+      }),
+    });
+
+    await blog.save();
+    res.redirect(`/article-post/${blogId}`);
+  } catch (err) {
+    console.error("Error posting comment:", err);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+
 module.exports = {
   gethome,
   getabout,
@@ -670,7 +821,7 @@ module.exports = {
   getprivacypolicy,
   getproducttemplate,
   getsearch,
-  getsearchblog,
+  getArticlepost,
   getreturn,
   getproadd,
   getprotick,
@@ -681,4 +832,7 @@ module.exports = {
   postForm,
   getaddproduct,
   postProduct,
+  getblogform,
+  postBlog,
+  postComment,
 };
